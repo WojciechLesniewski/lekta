@@ -1,0 +1,13 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: reader
+  labels:
+    name: reader
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 8000
+    targetPort: 8000
+  selector:
+    app: reader
