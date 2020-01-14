@@ -1,0 +1,35 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: writer
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: writer
+  template:
+    metadata:
+      name: writer
+      labels:
+        app: writer
+    spec:
+      containers:
+      - name: writer
+        image: wojcio/writer
+        ports:
+        - containerPort: 80
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: writer
+  labels:
+    name: writer
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 80
+  selector:
+    app: writer

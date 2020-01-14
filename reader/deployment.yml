@@ -1,0 +1,44 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: reader
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: reader
+  template:
+    metadata:
+      name: reader
+      labels:
+        app: reader
+    spec:
+      containers:
+      - name: reader
+        image: wojcio/reader
+        ports:
+        - containerPort: 8000
+        env:
+          - name: host
+            value: "postgres"
+          - name: dbName
+            value: "db"  
+          - name: dbUsername
+            value: "postgres"
+          - name: dbPassword
+            value: "postgres"
+    
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: reader
+  labels:
+    name: reader
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 8000
+    targetPort: 8000
+  selector:
+    app: reader
